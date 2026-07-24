@@ -1,0 +1,19 @@
+[[drill]]
+name = "halt_mid_bind"
+cut_at = 2
+phase_ord = 1
+
+[[drill]]
+name = "halt_upper_lane"
+cut_at = 1
+phase_ord = 2
+
+[[drill]]
+name = "cold_empty_store"
+cut_at = 0
+phase_ord = 0
+
+[[drill]]
+name = "warm_handoff"
+cut_at = 2
+phase_ord = 1

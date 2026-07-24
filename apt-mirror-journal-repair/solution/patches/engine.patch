@@ -1,0 +1,26 @@
+--- a/engine/pipeline.go
++++ b/engine/pipeline.go
+@@ -6,17 +6,16 @@
+ // Stock build reverses the hook argv slice whenever gate_first is set.
+ func fn_e1(gateFirst bool, seq []int, sideCb HookFn, gateCb HookFn) int {
+ 	order := append([]int(nil), seq...)
+-	if gateFirst {
+-		for i, j := 0, len(order)-1; i < j; i, j = i+1, j-1 {
+-			order[i], order[j] = order[j], order[i]
+-		}
++	_ = gateFirst
++	if len(order) == 0 {
++		return 0
+ 	}
+ 	sum := 0
+-	for _, slot := range order {
++	for i, slot := range order {
+ 		if slot == 0 {
+-			sum += sideCb()
++			sum += sideCb() * (i + 1)
+ 		} else {
+-			sum += gateCb()
++			sum += gateCb() * (i + 1)
+ 		}
+ 	}
+ 	return sum

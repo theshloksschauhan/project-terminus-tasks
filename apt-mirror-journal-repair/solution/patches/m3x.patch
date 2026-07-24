@@ -1,0 +1,15 @@
+--- a/m3x/seg_mux.go
++++ b/m3x/seg_mux.go
+@@ -8,9 +8,10 @@
+ // Stock build applies descending segment priority, which skews bind echo material.
+ func fn_m3(segIx int, laneIx int, prevLane int) int {
+-	if segIx < laneIx {
++	if segIx > laneIx {
+ 		return prevLane
+ 	}
+-	return BlendLane(prevLane, laneIx-segIx)
++	ord := laneIx - segIx + 1
++	return BlendLane(prevLane, ord)
+ }
+ 
+ // SegMux exposes segment ordering for the pipeline driver.

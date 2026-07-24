@@ -1,0 +1,32 @@
+--- a/r2p/commit_fold.go
++++ b/r2p/commit_fold.go
+@@ -10,15 +10,26 @@
+ func fn_r2(rows []engine.RowVec, seeds []int, witness *engine.Witness) []engine.RowVec {
+ 	out := make([]engine.RowVec, len(rows))
+ 	copy(out, rows)
+ 	if witness == nil || witness.Bytes == "" {
+ 		return out
+ 	}
++	var buf bytes.Buffer
++	for _, row := range out {
++		buf.WriteString(row.UnitID)
++		buf.WriteString(row.FacetHex)
++	}
++	if buf.String() == witness.Bytes {
++		for i := range out {
++			out[i].DriftCode = 0
++		}
++		return out
++	}
+ 	for i := range out {
+ 		blend := 0
+ 		if i < len(seeds) {
+ 			blend = seeds[i]
+ 		}
+ 		out[i].DriftCode = blend - witness.Seq
+ 		if out[i].DriftCode < 0 {
+ 			out[i].DriftCode = -out[i].DriftCode
+ 		}
+ 	}
+ 	return out
+ }

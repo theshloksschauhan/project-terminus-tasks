@@ -1,0 +1,12 @@
+--- a/k7n/stash_mux.go
++++ b/k7n/stash_mux.go
+@@ -6,8 +6,7 @@
+ func fn_k7(ctx *engine.LaneCtx, stampA uint32, stampB uint32) uint32 {
+ 	ctx.StampA = stampA
+ 	ctx.StampB = stampB
+ 	merged := stampA ^ stampB
+-	ctx.Bitmap |= merged & 0xffff
+-	ctx.Bitmap |= stampB & 0xffff
++	ctx.Bitmap &^= stampB & 0xffff
+ 	return merged
+ }

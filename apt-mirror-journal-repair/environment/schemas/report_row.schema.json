@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "run_report",
+  "type": "object",
+  "required": ["rows", "summary"],
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "unit_id",
+          "lag",
+          "sched_rc",
+          "lock_rc",
+          "unit_rc",
+          "facet_hex",
+          "drift_code"
+        ],
+        "properties": {
+          "unit_id": { "type": "string" },
+          "lag": { "type": "integer" },
+          "sched_rc": { "type": "boolean" },
+          "lock_rc": { "type": "boolean" },
+          "unit_rc": { "type": "boolean" },
+          "facet_hex": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{16}$"
+          },
+          "drift_code": { "type": "integer" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["sync_label", "run_digest", "width"],
+      "properties": {
+        "sync_label": { "type": "string" },
+        "run_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{16}$"
+        },
+        "width": { "type": "integer" }
+      }
+    }
+  }
+}
