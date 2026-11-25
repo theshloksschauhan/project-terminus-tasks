@@ -32,3 +32,28 @@ This task involves repairing an offline package archive sync daemon written in G
 
 ## Evaluation
 Both tasks are structured strictly against the Terminus Edition 2 guidelines. They are validated deterministically via an `oracle` solution and a comprehensive Python `pytest` suite running within a Docker sandbox, ensuring no agent can "cheat" its way to success.
+
+## Task layout
+
+Each task follows the same structure:
+
+```
+<task>/
+  instruction.md      what the agent is asked to do
+  task.toml           metadata, timeouts and resource limits
+  environment/        Dockerfile and the broken codebase the agent starts from
+  solution/solve.sh   reference (oracle) solution
+  tests/test.sh       runs tests/test_outputs.py with pytest and writes reward 1 or 0
+```
+
+## Verify a task locally
+
+```bash
+cd optimize-cpp-multistage-docker
+docker build -t terminus-task environment/
+docker run --rm -it \
+  -v "$PWD/solution:/solution" -v "$PWD/tests:/tests" \
+  terminus-task bash -c "bash /solution/solve.sh && bash /tests/test.sh"
+```
+
+The oracle solution should score a reward of 1. The unmodified environment should score 0.
